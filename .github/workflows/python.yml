@@ -16,6 +16,12 @@ jobs:
     - name: Install Python 3.8 using amazon-linux-extras
       run: |
         sudo amazon-linux-extras install -y python3.8
+        sudo amazon-linux-extras install -y docker
+        sudo systemctl start docker
+        
+    - name: Build Docker image
+      run: docker build -t Dockerfile .
+
 
     - name: Verify Python Installation
       run: python3.8 --version
