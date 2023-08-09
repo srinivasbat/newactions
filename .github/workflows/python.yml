@@ -1,4 +1,4 @@
-name: Amazon Linux Python Setup
+name: push-to-EC2
 
 on:
   push:
@@ -7,24 +7,17 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # GitHub-hosted runner
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install Python 3.8 using amazon-linux-extras
-      run: |
-        sudo amazon-linux-extras install -y python3.8
-        sudo amazon-linux-extras install -y docker
-        sudo systemctl start docker
-        
-    - name: Build Docker image
-      run: sudo docker build -t myimage .
+    - name: check docker version
+      run: sudo docker --version
 
+    - name: run docker container
+      run: sudo docker run -itd --name nginx -p 80:80 nginx
 
-    - name: Verify Python Installation
-      run: python3.8 --version
-
-    - name: Run Python script
-      run: python3.8 app.py
+    - name: execute shell script
+      run: sudo sh script.sh
